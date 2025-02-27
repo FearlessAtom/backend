@@ -1,0 +1,31 @@
+body, html, .container
+{
+    height: 100%
+}
+
+body
+{
+    background-color: white;
+}
+
+input::placeholder
+{
+    color: black;
+}
+
+input
+{
+    display: block;
+}
+
+input:not(:last-child)
+{
+    margin-bottom: 5px;
+}
+
+.container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

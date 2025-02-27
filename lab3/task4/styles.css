@@ -1,0 +1,17 @@
+.container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body, html, .container
+{
+    height: 100%;
+}
+
+body
+{
+    background-color: white;
+    margin: 0;
+}

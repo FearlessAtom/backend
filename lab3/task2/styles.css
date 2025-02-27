@@ -1,0 +1,33 @@
+input
+{
+    display: block;
+}
+
+input:not(:last-child)
+{
+    margin-bottom: 5px;
+}
+
+input::placeholder
+{
+    color: black;
+}
+
+html, body
+{
+    height: 100%;
+    width: 100%;
+}
+
+body
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form
+{
+    border: 1px solid black;
+    padding: 5px;
+}
