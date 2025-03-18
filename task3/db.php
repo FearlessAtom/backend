@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $user = "homeuser";
-$db_name = "lab5";
+$db_name = "company_db";
 $charset = "utf8mb4";
 $password = "someuser";
 
