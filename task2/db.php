@@ -1,10 +1,10 @@
 <?php
 
 $host = "localhost";
+$user = "homeuser";
 $db_name = "lab5";
-$user = "phpmyadmin";
-$password = "fearlessatom";
 $charset = "utf8mb4";
+$password = "someuser";
 
 $source_name = "mysql:host=$host;dbname=$db_name;charset=$charset";
 
@@ -21,6 +21,7 @@ try
 
 catch (PDOException $e)
 {
-    echo "Error creation a PDO!" . "\n";
+    echo "Error creating a PDO!";
     exit;
 }
+

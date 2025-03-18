@@ -39,7 +39,7 @@
 <body>
     <form method="post">
         <div>
-            <input type="text" name="user-name" value="<?=$user->user_name ?? ""?>" placeholder="Username">
+            <input readonly type="text" name="user-name" value="<?=$user->user_name ?? ""?>" placeholder="Username">
         </div>
 
         <div>

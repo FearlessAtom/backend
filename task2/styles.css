@@ -1,0 +1,24 @@
+td
+{
+    padding: 5px;
+}
+
+table
+{
+    border-collapse: collapse;
+}
+
+table, td, tr
+{
+    border: 1px solid black;
+}
+
+h2
+{
+    margin: 0;
+}
+
+input::placeholder, textarea::placeholder
+{
+    color: black;
+}
