@@ -1,0 +1,67 @@
+body
+{
+    background-color: white;
+    margin: 0;
+}
+
+body, html
+{
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.form-container
+{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.form-container *:not(:last-child)
+{
+    margin-bottom: 5px;
+}
+
+.prompt
+{
+    margin: 0;
+}
+
+.inputs
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+table
+{
+    border-collapse: collapse;
+}
+
+table, tr, td
+{
+    border: 1px solid black;
+}
+
+td
+{
+    padding: 10px;
+}
+
+table
+{
+    text-align: center;
+}
+
+h2
+{
+    padding: 0;
+    margin: 0;
+}

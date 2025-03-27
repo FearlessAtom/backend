@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <td><h2>UserId</h2></td>
+                <td><h2>Username</h2></td>
+                <td><h2>EmailAddress</h2></td>
+                <td><h2>PasswordHash</h2></td>
+            </tr>
+        </thead>
+        <tbody id="table">
+
+        </tbody>
+    </table>
+</body>
+<script defer>
+    (async() => 
+    {
+        const table = document.querySelector("#table");
+
+        let reponse = await fetch("http://localhost/users");
+        let users = await reponse.json();
+
+        for (let i = 0; i < users.length; i++)
+        {
+            let row = document.createElement("tr");
+
+            row.innerHTML = `
+            <td>${users[i].user_id}</td>
+            <td>${users[i].user_name}</td>
+            <td>${users[i].email_address}</td>
+            <td>${users[i].password_hash}</td>
+            `;
+            
+            table.appendChild(row);
+        }
+    })();
+</script>
+</html>

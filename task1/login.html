@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="inputs">
+            <div>
+                <input id="email-address" required type="text" name="email-address" placeholder="Email address">
+            </div>
+
+            <div>
+                <input id="password" required type="text" minlength="8" maxlength="32" name="password"
+                    placeholder="Password">
+            </div>
+
+            <div style="width: 100%; display: flex; justify-content: flex-end">
+                <button onclick="login()" style="margin-left: auto">Sign up</button>
+            </div>
+        </div>
+
+        <p class="prompt">Don't have an account yet? <a href="register.html">Sign up</a></p>
+    </div>
+</body>
+<script>
+    const email_address_input = document.querySelector("#email-address");
+    const password_input = document.querySelector("#password");
+
+    async function login()
+    {
+        const email_address = email_address_input.value;
+        const password = password_input.value;
+
+
+        const response = await fetch("http://localhost/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ email_address, password }),
+        });
+
+        const user_id = await response.text();
+
+        if(response.status == 200)
+        {
+            sessionStorage.setItem("user_id", user_id);
+            window.location = "profile.html";
+        }
+    }
+</script>
+</html>

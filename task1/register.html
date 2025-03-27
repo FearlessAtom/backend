@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form>
+        <div class="form-container">
+            <div class="inputs">
+                <div>
+                    <input id="user-name" required minlength="4" maxlength="16" type="text" name="user-name"
+                        placeholder="Username">
+                </div>
+
+                <div>
+                    <input id="email-address" required type="email" name="email-address" placeholder="Email Address">
+                </div>
+
+                <div>
+                    <input id="password" required type="password" minlength="8" maxlength="32" name="password"
+                        placeholder="Password">
+                </div>
+
+                <div>
+                    <input required type="password" minlength="8" maxlength="32" name="confirm-password"
+                        placeholder="Confirm Password">
+                </div>
+
+                <div id="confirm-password" style="width: 100%; display: flex; justify-content: flex-end">
+                    <input style="margin-left: auto" type="submit" onclick="registerUser(event)" value="Sign up">
+                </div>
+            </div>
+
+            <p class="prompt">Already have an account? <a href="login.html">Sign in</a></p>
+        </div>
+    </form>
+</body>
+<script defer>
+    async function registerUser(event)
+    {
+        event.preventDefault();
+
+        const user_name = document.querySelector("#user-name").value;
+        const email_address = document.querySelector("#email-address").value;
+        const password = document.querySelector("#password").value;
+        const confirm_password = document.querySelector("#confirm-password").value;
+
+        if (confirm_password !== password)
+        {   
+            alert("Passwords do not match!");
+            return;
+        }
+
+        const data =
+        {
+            user_name,
+            email_address,
+            password,
+        }
+
+        const response = await fetch("http://localhost/users",
+        {
+            method: "POST",
+            headers: {"Content-Type": "application/json", },
+            body: JSON.stringify(data),
+        });
+    }
+</script>
+</html>
