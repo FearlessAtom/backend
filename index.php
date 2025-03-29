@@ -31,6 +31,6 @@ $class_name = ucfirst($parts[1]) . "Controller";
 
 global $pdo;
 
-$controller = new UsersController($pdo);
+$controller = new $class_name($pdo);
 
 $controller->processRequest($request_method, $id);

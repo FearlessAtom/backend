@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container"></div>
+</body>
+<script defer>
+    const container = document.querySelector(".container");
+
+    load_notes();
+
+    async function load_notes()
+    {
+        const response = await fetch("http://localhost/notes");
+        const notes = await response.json();
+
+        notes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        for(let i = 0; i < notes.length; i++)
+        {
+            item = createItem(notes[i]);
+
+            container.appendChild(item);
+        }
+
+        const add_button = document.createElement("div");
+
+        add_button.addEventListener("click", open_add_note_window);
+
+        add_button.classList.add("item");
+        add_button.classList.add("add-button");
+
+        add_button.innerHTML = "Add Note";
+
+        container.appendChild(add_button);
+    }
+
+    function createItem(note)
+    {
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.setAttribute("data-note-id", note.note_id);
+
+        item.innerHTML = `
+            <div class="title-container">
+                <h2 class="title">${note.title}</h2>
+
+                <div class="buttons">
+                    <button onclick="open_edit_note_window(this, ${note.note_id})">Edit</button>
+                    <button onclick="delete_note(this, ${note.note_id})">Delete</button>
+                </div>
+
+            </div>
+            <div class="content-container">
+                <div>
+                    <p class="content">${note.content}</p>
+                </div>
+                <div class="date-container">
+                    <p>${note.created_at}</p>
+                </div>
+            </div>
+        `;
+
+        return item;
+    }
+
+    function open_add_note_window()
+    {
+        const contents = `
+            <div>
+                <input required id="title" type="text" placeholder="Title">
+            </div>
+            <div>
+                <textarea required id="content" rows="10" cols="50" type="text" placeholder="Content"></textarea>
+            </div>
+            <div class="buttons-container">
+                <button class="cancel-button">Cancel</button>
+                <button onclick="add_note()" class="done-button cancel-button">Done</button>
+            </div>
+        `;
+         
+        open_modal_window(contents);
+    }
+
+    async function add_note()
+    {
+        const title = document.querySelector("#title").value;
+        const content = document.querySelector("#content").value;
+
+        const response = await fetch("http://localhost/notes",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content }),
+        });
+
+        const note =
+        { 
+            title,
+            content,
+            created_at: get_formatted_datetime(),
+        }
+
+        const item = createItem(note);
+        container.prepend(item);
+    }
+
+    function open_edit_note_window(button, id)
+    {
+        const item = button.closest(".item");
+
+        const original_title = item.querySelector(".title").textContent;
+        const original_content = item.querySelector(".content").textContent;
+        
+        window.editing_item = item;
+
+        const contents = `
+            <div class="edit-window">
+                <input id="title" type="text" value="${original_title}" placeholder="Title">
+            </div>
+            <div>
+                <textarea id="content" rows="10" cols="50" placeholder="Content">${original_content}</textarea>
+            </div>
+            <div class="buttons-container">
+                <button class="cancel-button">Cancel</button>
+                <button onclick="edit_note(${id})" class="done-button cancel-button">Save</button>
+            </div>
+        `;
+        
+        open_modal_window(contents);
+    }
+
+    async function edit_note(id)
+    {
+        const new_title = document.querySelector("#title").value;
+        const new_content = document.querySelector("#content").value;
+        
+        const response = await fetch(`http://localhost/notes/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: new_title, content: new_content }),
+        });
+        
+        if (response.ok && window.editing_item)
+        {
+            window.editing_item.querySelector(".title").textContent = new_title;
+            window.editing_item.querySelector(".content").textContent = new_content;
+        }
+    }
+        
+
+    function get_formatted_datetime()
+    {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    async function delete_note(button, id)
+    {
+        const confirmation = confirm("Are you sure you want to delete the note!");
+
+        if (!confirmation)
+        {
+            return;
+        }
+
+        const response = await fetch(`http://localhost/notes/${id}`, { method: "DELETE" });
+        
+        await response.text();
+
+        const item = button.closest(".item");
+
+        if (item) item.remove();
+    }
+
+    function open_modal_window(contents)
+    {
+        const modal_window_background = document.createElement("div");
+        modal_window_background.classList.add("modal-window-background");
+
+        const modal_window_container = document.createElement("div");
+        modal_window_container.classList.add("modal-window-container");
+
+        modal_window_container.innerHTML = contents;
+
+        document.body.appendChild(modal_window_background);
+        document.body.appendChild(modal_window_container);
+
+        const cancel_buttons = modal_window_container.querySelectorAll(".cancel-button");
+
+        for (let i = 0; i < cancel_buttons.length; i++)
+        {
+            cancel_buttons[i].addEventListener("click",() =>
+            {
+                document.body.removeChild(modal_window_background);
+                document.body.removeChild(modal_window_container);
+            });
+        }
+    }
+</script>
+</html>
