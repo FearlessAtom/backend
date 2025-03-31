@@ -22,6 +22,7 @@ $parts = explode("/", $_SERVER["REQUEST_URI"]);
 if ($parts[1] == "login")
 {
     $request_method = "LOGIN";
+    $parts[1] = "users";
     $id = null;
 }
 
