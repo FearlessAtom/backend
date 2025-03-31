@@ -14,6 +14,7 @@ if (!isset($id) || $id < 1 || $id > 10)
 {
     if (file_exists($cache_file_path))
     {
+        echo "Cache deleted!";
         unlink($cache_file_path);
     }
 
@@ -50,7 +51,8 @@ ob_clean();
 
 if (http_response_code() == 200)
 {
-    file_put_contents($cache_file_path, $contents);s
+    echo "Cache created!";
+    file_put_contents($cache_file_path, $contents);
 }
 
 ?>
