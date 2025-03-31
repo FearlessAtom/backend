@@ -1,6 +1,1 @@
-- ### [lab1](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab1)
-- ### [lab2](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab2)
-- ### [lab3](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab3)
-- ### [lab4](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab4)
-- ### [lab5](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab5)
-- ### [lab6](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/-/tree/lab6)
+[main branch](https://git.ztu.edu.ua/ipz/2023-2027/ipz-23-1/semenchuk-oleksiy/backend/)
