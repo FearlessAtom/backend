@@ -27,8 +27,6 @@ ob_start();
 <?php
     $data = json_decode(file_get_contents("php://input"));
 
-    print_r($data);
-
     if (isset($data->error) && $data->error === "true")
     {
         throw new Error("Exception is thrown!");
