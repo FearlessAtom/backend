@@ -3,7 +3,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
 class Logger
 {
     public static $FilePath = "requests.log";
@@ -11,6 +10,8 @@ class Logger
     public static $Separator = "|";
     public static $RateLimit = 5;
     public static $RateTimeLimitMinutes = 1;
+    public static $LogKeepTimeMinutes = 1;
+    public static $DoLogCleanup = true;
 
     public static function GetLogs(): mixed
     {
@@ -33,6 +34,8 @@ class Logger
 
     public static function ValidateRateLimit(string $IpAddress): bool
     {
+        self::CleanLogs();
+
         $Logs = self::GetLogs();
 
         $IpLogs = array();
@@ -58,7 +61,6 @@ class Logger
                 $IpLogsWithinTime[] = $IpLogs[$i];
             }
         }
-
         return count($IpLogsWithinTime) < self::$RateLimit;
     }
 
@@ -68,6 +70,36 @@ class Logger
         fwrite($file, $IpAddress . Logger::$Separator . $RequestTime . "\n");
         fclose($file);
     }
+
+    public static function CleanLogs(): void
+    {
+        if (!self::$DoLogCleanup) return;
+
+        $Logs = self::GetLogs();
+
+        $FilteredLogs = array();
+
+        for ($i = 0; $i < count($Logs); $i++)
+        {
+            $Difference = time() - (int)$Logs[$i]["RequestTime"];
+
+            if (($Difference / 60) > self::$LogKeepTimeMinutes)
+            {
+                continue;
+            }
+
+            $FilteredLogs[] = $Logs[$i];
+        }
+
+        $file = fopen(self::$FilePath, "w");
+       
+        for ($i = 0; $i < count($FilteredLogs); $i++)
+        {
+            fwrite($file, $FilteredLogs[$i]["IpAddress"] . self::$Separator . $FilteredLogs[$i]["RequestTime"] . "\n");
+        }
+
+        fclose($file);
+    }
 }
 
 $IpAddress = $_SERVER["REMOTE_ADDR"];
@@ -75,7 +107,6 @@ $RequestTime = $_SERVER["REQUEST_TIME"];
 
 if (!Logger::ValidateRateLimit($IpAddress, $RequestTime))
 {
-
     http_response_code(429);
     exit;
 }
