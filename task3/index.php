@@ -1,7 +1,7 @@
 <?php
 
-$EstimatedResolutionTime = time() + 60 * 60 * 5;
-$DateFormat = "d.m.Y h:m";
+$EstimatedResolutionTime = time() + (60 * 60 * 5);
+$DateFormat = "m.d.Y h:i A";
 
 register_shutdown_function(function() use($DateFormat, $EstimatedResolutionTime)
 {
